@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Booth — stream player</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></symbol>
+<symbol id="i-pause" viewBox="0 0 24 24"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></symbol>
+<symbol id="i-vol" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 8.5a5 5 0 0 1 0 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+<symbol id="i-mute" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M17 9l5 6M22 9l-5 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+<symbol id="i-fsin" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-fsout" viewBox="0 0 24 24"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top">
+  <h1>Booth</h1>
+  <form id="keyForm" class="keyform" autocomplete="off">
+    <label for="keyInput" class="sr">Video URL or key</label>
+    <input id="keyInput" type="text" placeholder="Paste a link containing ?videoKey=… or a video key" spellcheck="false">
+    <button type="submit" id="findBtn">Find streams</button>
+  </form>
+</header>
+<main>
+  <section class="stage" id="stage">
+    <video id="video" playsinline preload="metadata"></video>
+    <div class="overlay" id="overlay" role="status" aria-live="polite"></div>
+    <div class="controls" id="controls" hidden>
+      <input id="seek" type="range" min="0" max="0" step="0.1" value="0" aria-label="Seek">
+      <div class="row">
+        <button id="playBtn" aria-label="Play" data-state="paused"><svg class="i i-play"><use href="#i-play"/></svg><svg class="i i-pause"><use href="#i-pause"/></svg></button>
+        <span id="time" class="time">0:00 / 0:00</span>
+        <span class="grow"></span>
+        <button id="muteBtn" aria-label="Mute" data-state="on"><svg class="i i-vol"><use href="#i-vol"/></svg><svg class="i i-mute"><use href="#i-mute"/></svg></button>
+        <input id="vol" type="range" min="0" max="1" step="0.05" value="1" aria-label="Volume">
+        <span id="nowPlaying" class="time"></span>
+        <button id="fsBtn" aria-label="Fullscreen" data-state="enter"><svg class="i i-fsin"><use href="#i-fsin"/></svg><svg class="i i-fsout"><use href="#i-fsout"/></svg></button>
+      </div>
+    </div>
+  </section>
+  <aside class="side">
+    <div id="msg" class="msg" role="alert" hidden></div>
+    <fieldset id="streams" class="streams" hidden>
+      <legend>Available streams</legend>
+      <div id="streamList"></div>
+      <button id="playSelected" type="button" class="primary">Play selected</button>
+    </fieldset>
+    <p id="empty" class="hint">Paste a video link or key to list its available qualities. Nothing is loaded until you press Play.</p>
+    <p class="hint keys">Space/K play · ←/→ 5s · J/L 10s · ↑/↓ volume · M mute · F fullscreen</p>
+  </aside>
+</main>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
